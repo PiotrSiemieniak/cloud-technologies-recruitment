@@ -5,7 +5,6 @@ import { Skeleton, Typography, IconButton } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { getCookie } from "@/utils/getCookie";
 import { useRouter } from "next/navigation";
-import { Router } from "next/router";
 
 export function UserBadge() {
   const [token, setToken] = useState<string | null>(null);
