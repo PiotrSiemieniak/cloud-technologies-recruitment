@@ -46,7 +46,11 @@ export const EditAdPopup: React.FC = () => {
   }, [ad]);
 
   const handleSave = () => {
-    if (!title.length || !desc.length || !startDate || !endDate) {
+    const now = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (!title || !desc || !startDate || !endDate) {
       setError("All fields must be filled.");
       return;
     }
@@ -56,33 +60,39 @@ export const EditAdPopup: React.FC = () => {
       return;
     }
 
+    if (start < now) {
+      setError("Start date cannot be in the past.");
+      return;
+    }
+
+    if (end < start) {
+      setError("End date cannot be earlier than start date.");
+      return;
+    }
+
     if (editedAd !== null) {
       editAd(editedAd, {
         ...ad,
         title,
         desc,
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
+        startDate: start,
+        endDate: end,
       });
     } else {
       createAd({
         title,
         desc,
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
+        startDate: start,
+        endDate: end,
       });
     }
     hideEditPopup();
     hideCreateNewAdPopup();
-
-    setError(null);
   };
 
   const handleClose = () => {
     hideEditPopup();
     hideCreateNewAdPopup();
-
-    setError(null);
   };
 
   return (
